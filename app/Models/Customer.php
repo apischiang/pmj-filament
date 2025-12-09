@@ -9,10 +9,6 @@ use Illuminate\Validation\ValidationException;
 
 class Customer extends Model
 {
-    // Custom timestamp column names
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'edited_at';
-
     /**
      * The primary key associated with the table.
      *

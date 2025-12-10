@@ -38,8 +38,17 @@ class QuotationItem extends Model
         'product_name',
         'description',
         'quantity',
+        'uom',
         'unit_price',
+        'discount',
         'total_price',
+    ];
+
+    protected $casts = [
+        'discount' => 'decimal:2',
+        'quantity' => 'integer',
+        'unit_price' => 'decimal:2',
+        'total_price' => 'decimal:2',
     ];
 
     /**
@@ -57,7 +66,9 @@ class QuotationItem extends Model
         static::saving(function (QuotationItem $item) {
             // Calculate total price automatically
             if ($item->quantity && $item->unit_price) {
-                $item->total_price = $item->quantity * $item->unit_price;
+                $discountAmount = ($item->unit_price * ($item->discount ?? 0)) / 100;
+                $priceAfterDiscount = $item->unit_price - $discountAmount;
+                $item->total_price = $item->quantity * $priceAfterDiscount;
             }
         });
     }

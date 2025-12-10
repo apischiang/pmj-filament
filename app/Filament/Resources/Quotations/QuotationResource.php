@@ -9,18 +9,18 @@ use App\Filament\Resources\Quotations\Schemas\QuotationForm;
 use App\Filament\Resources\Quotations\Tables\QuotationsTable;
 use App\Models\Quotation;
 use BackedEnum;
-use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
+use Filament\Resources\Resource;
 use Filament\Tables\Table;
 
 class QuotationResource extends Resource
 {
     protected static ?string $model = Quotation::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Schema $schema): Schema
+
     {
         return QuotationForm::configure($schema);
     }

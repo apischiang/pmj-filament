@@ -38,9 +38,23 @@ class Quotation extends Model
         'quotation_number',
         'date',
         'status',
+        'payment_terms',
+        'due_date',
         'total_amount',
+        'subtotal_amount',
+        'ppn_amount',
+        'has_ppn',
         'terms_and_conditions',
         'created_by',
+    ];
+
+    protected $casts = [
+        'has_ppn' => 'boolean',
+        'total_amount' => 'decimal:2',
+        'subtotal_amount' => 'decimal:2',
+        'ppn_amount' => 'decimal:2',
+        'date' => 'date',
+        'due_date' => 'date',
     ];
 
     /**

@@ -46,7 +46,7 @@ class QuotationsTable
                     }),
                 TextColumn::make('total_amount')
                     ->label('Total')
-                    ->money('IDR')
+                    ->money('IDR', decimalPlaces: 0)
                     ->sortable(),
                 TextColumn::make('status')
                     ->badge()
@@ -60,10 +60,10 @@ class QuotationsTable
             ->filters([
                 //
             ])
-            ->actions([
+            ->recordActions([
                 EditAction::make(),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

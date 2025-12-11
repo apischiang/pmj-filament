@@ -47,6 +47,38 @@ class QuotationForm
                                         Textarea::make('address'),
                                     ])
                                     ->required()
+                                    ->live()
+                                    ->afterStateUpdated(function ($state, callable $set) {
+                                        if (!$state) return;
+                                        
+                                        $customer = \App\Models\Customer::find($state);
+                                        if (!$customer || !$customer->company_name) return;
+
+                                        // 1. Get company initial (max 3 uppercase letters)
+                                        $initials = strtoupper(substr(preg_replace('/[^a-zA-Z]/', '', $customer->company_name), 0, 3));
+                                        if (strlen($initials) < 2) {
+                                            $initials = strtoupper(substr($customer->company_name, 0, 3));
+                                        }
+                                        
+                                        // 2. Count existing quotations for this customer to determine sequence
+                                        $count = \App\Models\Quotation::where('customer_uid', $state)->count();
+                                        $sequence = str_pad($count + 1, 3, '0', STR_PAD_LEFT);
+                                        
+                                        // 3. Generate format: PMJ-[INITIAL]-[MONTH]-[SEQUENCE]
+                                        // Example: PMJ-MAJ-12-1
+                                        $month = now()->format('m');
+                                        $sequenceSimple = $count + 1; // No padding as per request (e.g. "1" instead of "001")
+                                        
+                                        $quotationNumber = "PMJ-{$initials}-{$month}-{$sequenceSimple}";
+                                        
+                                        // 4. Ensure uniqueness
+                                        while (\App\Models\Quotation::where('quotation_number', $quotationNumber)->exists()) {
+                                            $sequenceSimple++;
+                                            $quotationNumber = "PMJ-{$initials}-{$month}-{$sequenceSimple}";
+                                        }
+
+                                        $set('quotation_number', $quotationNumber);
+                                    })
                                     ->columnSpan(2),
 
                                 TextInput::make('quotation_number')

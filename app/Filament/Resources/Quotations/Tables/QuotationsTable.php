@@ -51,8 +51,8 @@ class QuotationsTable
                 TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'draft' => 'gray',
-                        'sent' => 'info',
+                        'draft' => 'danger',
+                        'sent' => 'success',
                         'accepted' => 'success',
                         'rejected' => 'danger',
                     }),

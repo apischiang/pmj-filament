@@ -21,7 +21,8 @@ class QuotationsTable
                 TextColumn::make('customer.name')
                     ->label('Customer')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->description(fn ($record) => $record->customer->company_name ?? null),
                 TextColumn::make('date')
                     ->label('Issue Date')
                     ->date()
@@ -43,10 +44,6 @@ class QuotationsTable
                         'net_30', 'net_60' => 'warning',
                         default => 'gray',
                     }),
-                TextColumn::make('due_date')
-                    ->label('Jatuh Tempo')
-                    ->date()
-                    ->sortable(),
                 TextColumn::make('total_amount')
                     ->label('Total')
                     ->money('IDR')
